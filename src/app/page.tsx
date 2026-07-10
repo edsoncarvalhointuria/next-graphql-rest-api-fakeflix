@@ -4,8 +4,11 @@ import { ApiReferenceReact } from "@scalar/api-reference-react";
 import "@scalar/api-reference-react/style.css";
 import { documentOpenapi } from "@/schemas/openapi_schemas";
 import "@/schemas/openapi_path";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Loading from "./loading";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import { createPortal } from "react-dom";
 
 const LoadingPage = ({
     isLoading = true,
@@ -15,7 +18,17 @@ const LoadingPage = ({
     setIsLoading: (v: boolean | null) => void;
 }) => {
     return (
-        <div className={isLoading === false ? "loading__exit" : ""} onAnimationEnd={() => setIsLoading(null)}>
+        <div
+            className={isLoading === null ? "" : isLoading === false ? "loading loading__exit" : "loading"}
+            onAnimationEnd={
+                isLoading === false
+                    ? () => {
+                          setIsLoading(null);
+                          console.log("Eu entrei aqui");
+                      }
+                    : undefined
+            }
+        >
             {isLoading !== null && <Loading />}
         </div>
     );
@@ -23,15 +36,15 @@ const LoadingPage = ({
 
 export default function Home() {
     const [isLoading, setIsLoading] = useState<boolean | null>(true);
-    const document = documentOpenapi();
+    const documentOp = documentOpenapi();
+
     return (
         <>
-            <LoadingPage isLoading={isLoading} setIsLoading={setIsLoading} />
             <main style={{ height: "100dvh", display: isLoading ? "none" : undefined }}>
                 <ApiReferenceReact
                     configuration={{
-                        onLoaded: (v) => setIsLoading(false),
-                        content: document,
+                        onLoaded: () => setIsLoading(false),
+                        content: documentOp,
                         theme: "bluePlanet",
                         defaultHttpClient: { targetKey: "javascript", clientKey: "ofetch" },
                         metaData: { title: "Fakeflix" },
@@ -39,6 +52,10 @@ export default function Home() {
                     }}
                 />
             </main>
+
+            <LoadingPage isLoading={isLoading} setIsLoading={setIsLoading} />
+            <Analytics />
+            <SpeedInsights />
         </>
     );
 }

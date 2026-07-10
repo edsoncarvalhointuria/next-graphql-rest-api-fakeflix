@@ -15,6 +15,8 @@
         "@as-integrations/next": "^4.1.0",
         "@asteasolutions/zod-to-openapi": "^8.5.0",
         "@scalar/api-reference-react": "^0.9.53",
+        "@vercel/analytics": "^2.0.1",
+        "@vercel/speed-insights": "^2.0.0",
         "dataloader": "^2.2.3",
         "graphql": "^16.14.2",
         "next": "16.2.9",

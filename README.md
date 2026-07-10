@@ -1,61 +1,131 @@
-<div align="center" >
-  <img src="./public/fakeflixpng.png" alt="Logo Fakeflix API" width=300 />
+<div align="center">
+  <img src="./public/fakeflixpng.png" alt="Logo Fakeflix API" width="300" />
 </div>
 
-# 🎬 Fakeflix: Hyrbid API (REST & GraphQL)
+# 🎬 Fakeflix: Hybrid API (REST & GraphQL)
 
-Uma API robusta, híbrida e de alto desempenho desenvolvida como demonstração de domínio profundo em fundamentos de Engenharia de Software, Arquitetura de Redes e Design de APIs.
+Uma API híbrida (**REST + GraphQL**) desenvolvida para gerenciar um catálogo fictício de filmes e séries.
 
-Este projeto não utiliza ORMs pesados ou frameworks mágicos para a camada de dados. Toda a infraestrutura foi projetada com foco nas melhores práticas de mercado, desde o controle relacional nativo até a interceptação de tráfego na borda (Edge Computing).
+O projeto foi construído com foco em boas práticas de Engenharia de Software, Arquitetura de APIs e modelagem relacional, explorando conceitos como **HATEOAS**, **GraphQL**, **Raw SQL**, **validação orientada por schemas**, **documentação automática** e **Edge Computing**.
 
-## 🚀 Ambientes Interativos (Sandbox Epêmero)
+<p align="center">
 
-O ambiente de produção foi desenhado para ser testado à vontade. Operações de mutação (POST, PUT, PATCH, DELETE) executam suas lógicas reais e refletem no banco de dados temporário, mas o catálogo original é restaurado automaticamente para garantir a integridade dos testes.
+**REST • GraphQL • HATEOAS • RFC 7807 • OpenAPI • Zod • SQLite • Raw SQL • DataLoader • Next.js**
 
-- **Documentação REST (OpenAPI/Scalar):** [Acesse a Rota Principal (`/`)](#)
-- **Playground GraphQL (Apollo/Yoga):** [Acesse a Rota (`/graphql`)](#)
-
----
-
-## 🧠 Destaques Arquiteturais
-
-### 🔗 REST: Maturidade Nível 3 (HATEOAS)
-
-A camada REST alcança o nível máximo do modelo de maturidade de Richardson. Todas as requisições retornam o estado atual do recurso acompanhado de hiperlinks de navegação (`_links`), permitindo que o cliente descubra as próximas ações dinamicamente sem depender de documentação externa.
-
-### 🛡️ Tratamento de Erros Padronizado (RFC 7807)
-
-A API não retorna erros genéricos. Qualquer anomalia (seja falha de validação ou estouro de limite de requisições) é envelopada e devolvida estritamente no padrão internacional **RFC 7807** (`application/problem+json`), garantindo previsibilidade para os clientes que a consomem.
-
-### 🐙 GraphQL com DataLoader (Anti N+1)
-
-O motor GraphQL resolve relacionamentos complexos (Filmes, Séries, Temporadas, Episódios, Elenco, Criadores) de forma altamente otimizada. A implementação do padrão `DataLoader` agrupa e faz cache das resoluções em lote, erradicando o problema clássico de N+1 consultas ao banco de dados.
-
-### 🗄️ Raw SQL & Controle Transacional
-
-A persistência é gerenciada através de um driver SQLite nativo. A ausência de ORMs demonstra o domínio na escrita de _Raw Queries_, mapeamento relacional, controle explícito de Chaves Estrangeiras e integridade atômica utilizando transações manuais (`BEGIN TRANSACTION`, `COMMIT`, `ROLLBACK`).
-
-### 🚦 Edge Rate Limiting (Proxy de Defesa)
-
-Para proteger a integridade do banco de dados e evitar ataques de força bruta, a API conta com um Proxy Reverso operando na borda da aplicação (_Next.js Edge Runtime_). Baseado no algoritmo de Janela Deslizante em memória, o sistema barra requisições excessivas antes mesmo de atingirem a camada lógica principal.
-
-### ✅ Validação Pura (Schema-Driven)
-
-O ciclo de vida dos dados é fortemente tipado. A entrada de dados passa pela validação rigorosa de schemas do **Zod**, garantindo que nenhum dado malformado alcance o banco de dados. Esses mesmos schemas são responsáveis por gerar a documentação OpenAPI dinamicamente.
+</p>
 
 ---
 
-## 🛠️ Tecnologias Utilizadas
+## 🍿 Catálogo
 
-- **Framework:** Next.js (App Router & Edge Proxy)
-- **Linguagem:** TypeScript
-- **Bancos de Dados:** SQLite (Raw SQL Driver + In-Memory/Tmp Clone para Sandbox)
-- **GraphQL:** Implementação de Schemas, Resolvers e DataLoader
-- **Validação & OpenAPI:** Zod + Zod-to-OpenAPI
-- **Padrões Adotados:** HATEOAS, RFC 7807, Domain-Driven Design (DDD)
+A API disponibiliza um catálogo fictício pronto para uso, composto por:
+
+- 🎬 **30 filmes**
+- 📺 **14 séries**
+- 🎞️ Temporadas e episódios
+- 🎭 Elenco
+- ✍️ Criadores
+- 🏷️ Gêneros
+
+Todos os conteúdos incluem **banners**, **descrições**, **classificação indicativa** e **trailers gerados por Inteligência Artificial**, proporcionando um ambiente rico para testes e integração.
+
+---
+
+## 🚀 Ambientes Interativos (Sandbox)
+
+O ambiente foi projetado para ser explorado livremente.
+
+Operações de escrita (**POST**, **PUT**, **PATCH** e **DELETE**) executam normalmente, incluindo validações, regras de negócio e persistência em um banco temporário. Ao final do processo, o catálogo original é restaurado automaticamente, permitindo testar toda a API sem comprometer os dados disponibilizados para demonstração.
+
+- 📖 **Documentação REST (OpenAPI + Scalar):** `/`
+- 🐙 **Playground GraphQL (GraphQL Yoga):** `/graphql`
+
+---
+
+# 🧠 Destaques da Arquitetura
+
+## 🔗 REST Maturity Level 3 (HATEOAS)
+
+A API REST segue o **Nível 3 do Modelo de Maturidade de Richardson (HATEOAS)**.
+
+As respostas incluem hiperlinks (`_links`) que permitem ao cliente descobrir recursos e ações relacionadas dinamicamente, reduzindo o acoplamento entre cliente e servidor.
+
+---
+
+## 🛡️ Tratamento de Erros (RFC 7807)
+
+Todos os erros seguem o padrão **RFC 7807 (Problem Details for HTTP APIs)**.
+
+Falhas de validação, recursos inexistentes, conflitos e limitações de requisições são retornados utilizando o formato `application/problem+json`, fornecendo respostas consistentes e previsíveis para qualquer cliente.
+
+---
+
+## 🐙 GraphQL com DataLoader
+
+Além da camada REST, o projeto disponibiliza uma API GraphQL construída com **GraphQL Yoga**.
+
+Relacionamentos entre filmes, séries, temporadas, episódios, criadores, elenco e gêneros são resolvidos utilizando **DataLoader**, agrupando consultas e reduzindo significativamente o problema de **N+1 Queries**.
+
+---
+
+## 🗄️ Persistência com Raw SQL
+
+A camada de persistência foi implementada utilizando **SQLite** e consultas **Raw SQL**, sem a utilização de ORMs.
+
+Essa abordagem proporciona controle explícito sobre consultas, relacionamentos, chaves estrangeiras, índices e transações (`BEGIN`, `COMMIT` e `ROLLBACK`), além de facilitar a otimização das operações executadas pelo banco de dados.
+
+---
+
+## 🚦 Edge Rate Limiting
+
+Para proteger a aplicação contra abuso e excesso de requisições, a API possui um sistema de **Rate Limiting** executado na borda da aplicação (**Next.js Edge Runtime**).
+
+As requisições são analisadas antes de alcançarem a camada de negócio, reduzindo carga desnecessária sobre o servidor e protegendo os recursos da aplicação.
+
+---
+
+## ✅ Validação Orientada por Schemas
+
+Toda entrada de dados é validada utilizando **Zod**.
+
+Os mesmos schemas utilizados na validação são responsáveis por gerar automaticamente toda a documentação **OpenAPI**, garantindo que documentação e implementação permaneçam sempre sincronizadas.
+
+---
+
+# 🛠️ Tecnologias
+
+### Backend
+
+- Next.js (App Router)
+- TypeScript
+- SQLite
+- Raw SQL
+
+### APIs
+
+- REST
+- GraphQL Yoga
+- DataLoader
+
+### Documentação
+
+- OpenAPI 3.1
+- Scalar
+- Zod
+- Zod-to-OpenAPI
+
+### Arquitetura
+
+- REST Maturity Level 3 (HATEOAS)
+- RFC 7807 (Problem Details)
+- Edge Runtime
+- Rate Limiting
+- Schema Validation
 
 ---
 
 <div align="center">
-  <i>Edson Carvalho Inturia.</i>
+
+Desenvolvido por **Edson Carvalho Inturia**.
+
 </div>
