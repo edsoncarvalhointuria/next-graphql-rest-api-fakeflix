@@ -1,5 +1,5 @@
 <div align="center" >
-  <img src="./public/fakeflixpng.png" alt="Logo Fakeflix API" style="max-width:300px" />
+  <img src="./public/fakeflixpng.png" alt="Logo Fakeflix API" width=300 />
 </div>
 
 # 🎬 Fakeflix: Hyrbid API (REST & GraphQL)
