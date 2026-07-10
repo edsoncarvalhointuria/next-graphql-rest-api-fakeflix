@@ -367,13 +367,13 @@ export const schemaCatalogParams = registry.register(
                 (v) => (Array.isArray(v) ? v[0] : v),
                 z
                     .string("O título inválido. Ex: ?title=titulo")
-                    .openapi({ description: "Filtra os resultados por título do conteúdo.", example: "Neon%20Noir" }),
+                    .openapi({ description: "Filtra os resultados por título do conteúdo.", example: "Neon Noir" }),
             ),
             description: z.preprocess(
                 (v) => (Array.isArray(v) ? v[0] : v),
                 z.string("A descrição inválida. Ex: ?description=descricao").openapi({
                     description: "Filtra os resultados por texto presente na descrição do conteúdo.",
-                    example: "em%20uma",
+                    example: "em uma",
                 }),
             ),
             classification: z

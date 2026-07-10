@@ -22,7 +22,7 @@
 
     & .loading__exit {
         opacity: 1;
-        animation: exit 1s ease-in-out forwards;
+        animation: exit 2s ease-in-out forwards;
     }
 }
 
