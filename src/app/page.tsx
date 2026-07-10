@@ -4,11 +4,10 @@ import { ApiReferenceReact } from "@scalar/api-reference-react";
 import "@scalar/api-reference-react/style.css";
 import { documentOpenapi } from "@/schemas/openapi_schemas";
 import "@/schemas/openapi_path";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Loading from "./loading";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { createPortal } from "react-dom";
 
 const LoadingPage = ({
     isLoading = true,
