@@ -47,7 +47,7 @@ Explore as rotas utilizando o menu lateral e consulte os **Schemas** para conhec
                 url: "https://edsoncarvalhointuria.github.io/portfolio/",
             },
         },
-        servers: [{ url: "http://localhost:3000" }],
+        servers: [{ url: "https://fakeflix-api.vercel.app/", description: "Server Versel" }],
         tags: [
             {
                 name: "Catálogo",
