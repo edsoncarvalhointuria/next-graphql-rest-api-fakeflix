@@ -4,6 +4,7 @@ import { open } from "sqlite";
 import path from "path";
 import { datas } from "@/data/fakefkix.datas";
 import { randomUUID } from "crypto";
+import { DEFAULT_IDS } from "@/constants/defaultIds";
 
 const pathDb = path.join(process.cwd(), "db.sqlite");
 
@@ -35,13 +36,22 @@ const populationTables = async () => {
     const prepareGenres = await db.prepare("INSERT INTO genre VALUES (?, ?);");
 
     await Promise.all([
-        ...setCasts.values().map((v) => prepareCast.run([randomUUID(), v])),
-        ...setCreators.values().map((v) => prepareCreators.run([randomUUID(), v])),
-        ...setGenres.values().map((v) => prepareGenres.run([randomUUID(), v])),
+        ...setCasts
+            .values()
+            .map((v) => prepareCast.run([v === DEFAULT_IDS.cast.example ? DEFAULT_IDS.cast.id : randomUUID(), v])),
+        ...setCreators
+            .values()
+            .map((v) =>
+                prepareCreators.run([v === DEFAULT_IDS.creator.example ? DEFAULT_IDS.creator.id : randomUUID(), v]),
+            ),
+        ...setGenres
+            .values()
+            .map((v) => prepareGenres.run([v === DEFAULT_IDS.genre.example ? DEFAULT_IDS.genre.id : randomUUID(), v])),
     ]);
 
     for (const data of datas) {
-        const contentId = randomUUID();
+        const title = data.title;
+        const contentId = title === DEFAULT_IDS[data.type].example ? DEFAULT_IDS[data.type].id : randomUUID();
 
         await db.run(
             `INSERT INTO content
@@ -99,7 +109,7 @@ const populationTables = async () => {
             await db.run(`INSERT INTO serie(id, content_id) VALUES (?, ?);`, [serieId, contentId]);
 
             for (const season of data.serieData.seasons) {
-                const seasonId = randomUUID();
+                const seasonId = season.title === DEFAULT_IDS.season.example ? DEFAULT_IDS.season.id : randomUUID();
                 await db.run(`INSERT INTO season VALUES (?, ?, ?, ?);`, [
                     seasonId,
                     season.title,
@@ -110,7 +120,7 @@ const populationTables = async () => {
                 await Promise.all(
                     season.episodes.map((v) =>
                         db.run(`INSERT INTO episode VALUES (?,?,?,?,?,?,?,?,?);`, [
-                            randomUUID(),
+                            v.title === DEFAULT_IDS.episode.example ? DEFAULT_IDS.episode.id : randomUUID(),
                             v.key,
                             v.title,
                             v.description,

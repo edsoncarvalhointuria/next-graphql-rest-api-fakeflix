@@ -2,6 +2,7 @@ import { CLASSIFICATIONS, contentItemTables } from "@/constants/content";
 import z from "zod";
 import { registry } from "./openapi_schemas";
 import { DEFAULT_LIMIT } from "@/constants/limit";
+import { DEFAULT_IDS } from "@/constants/defaultIds";
 
 export const schemaId = z.object({
     id: z.uuidv4("ID Inválido").openapi({
@@ -45,8 +46,8 @@ export const schemaEpisodeId = z.object({
     episodeId: z
         .array(
             z
-                .uuidv4("O paramêtro episodeId está inválido. Ex: ?episodeId=4b326463-05af-494b-9db1-52638918ba59")
-                .openapi({ description: "Id do episódio", example: "4b326463-05af-494b-9db1-52638918ba59" }),
+                .uuidv4(`O paramêtro episodeId está inválido. Ex: ?episodeId=${DEFAULT_IDS.episode.id}`)
+                .openapi({ description: "Id do episódio", example: DEFAULT_IDS.episode.id }),
         )
         .optional(),
 });
@@ -82,7 +83,7 @@ export const schemaCreators = z
     .array(
         z.uuidv4("Id do criador inválido").openapi({
             description: "Identificador único (UUID) do criador.",
-            example: "23fc8bce-13fa-4ef1-9993-3fa8a1408adf",
+            example: DEFAULT_IDS.creator.id,
         }),
         "Os criadores devem ser enviados em uma array com os ids. Ex: creators: ['id1', 'id2']",
     )
@@ -94,7 +95,7 @@ export const schemaCast = z
     .array(
         z.uuidv4("Id cast inválido").openapi({
             description: "Identificador único (UUID) do elenco.",
-            example: "c54e6010-b5e8-4216-9a64-73fd8b433972",
+            example: DEFAULT_IDS.cast.id,
         }),
         "O elenco deve ser enviados em uma array com os ids. Ex: cast: ['id1', 'id2']",
     )
@@ -106,7 +107,7 @@ export const schemaGenres = z
     .array(
         z.uuidv4("Id genre inválido").openapi({
             description: "Identificador único (UUID) do gênero.",
-            example: "c204a7ce-10a4-4bd2-9797-e17b81fe2f55",
+            example: DEFAULT_IDS.genre.id,
         }),
         "Os gêneros devem ser enviados em uma array com os ids. Ex: genres: ['id1', 'id2']",
     )
@@ -192,7 +193,7 @@ export const schemaContenItemAddParams = schemaId.extend({
 export const schemaContenItemAlterParams = schemaContenItemAddParams.extend({
     itemId: z.uuidv4("Id Inválido").openapi({
         description: "Identificador (UUID) do item relacionado.",
-        example: "c204a7ce-10a4-4bd2-9797-e17b81fe2f55",
+        example: DEFAULT_IDS.genre.id,
     }),
 });
 
@@ -314,14 +315,12 @@ export const schemaCatalogParams = registry.register(
         .object({
             id: z
                 .array(
-                    z
-                        .uuidv4("O id do filme/série está inválido. Ex: ?id=fdd516b6-f30c-4c38-91a4-30652d5c70a8")
-                        .openapi({
-                            description: "Filtra a consulta por um ou mais ids (UUID).",
-                            example: "fdd516b6-f30c-4c38-91a4-30652d5c70a8",
-                        }),
+                    z.uuidv4(`O id do filme/série está inválido. Ex: ?id=${DEFAULT_IDS.MOVIE.id}`).openapi({
+                        description: "Filtra a consulta por um ou mais ids (UUID).",
+                        example: DEFAULT_IDS.MOVIE.id,
+                    }),
                 )
-                .openapi({ description: "Lista de ids", example: "fdd516b6-f30c-4c38-91a4-30652d5c70a8" }),
+                .openapi({ description: "Lista de ids", example: DEFAULT_IDS.MOVIE.id }),
             year: z
                 .preprocess(
                     (v) => (Array.isArray(v) ? v.map((v) => Number(v)) : [Number(v)]),
@@ -335,33 +334,33 @@ export const schemaCatalogParams = registry.register(
                 .openapi({ description: "Lista de anos", example: 2024 }),
             genre: z
                 .array(
-                    z.uuidv4("O gênero está inválido. Ex: ?genre=c204a7ce-10a4-4bd2-9797-e17b81fe2f55").openapi({
+                    z.uuidv4(`O gênero está inválido. Ex: ?genre=${DEFAULT_IDS.genre.id}`).openapi({
                         description: "Filtra os resultados por um ou mais gêneros.",
-                        example: "c204a7ce-10a4-4bd2-9797-e17b81fe2f55",
+                        example: DEFAULT_IDS.genre.id,
                     }),
                 )
-                .openapi({ description: "Lista de ids do gênero", example: "c204a7ce-10a4-4bd2-9797-e17b81fe2f55" }),
+                .openapi({ description: "Lista de ids do gênero", example: DEFAULT_IDS.genre.id }),
             cast: z
                 .array(
-                    z.uuidv4("Id do elenco está inválido. Ex: ?cast=c54e6010-b5e8-4216-9a64-73fd8b433972").openapi({
+                    z.uuidv4(`Id do elenco está inválido. Ex: ?cast=${DEFAULT_IDS.cast.id}`).openapi({
                         description: "Filtra os resultados por um ou mais integrantes do elenco.",
-                        example: "c54e6010-b5e8-4216-9a64-73fd8b433972",
+                        example: DEFAULT_IDS.cast.id,
                     }),
                 )
                 .openapi({
                     description: "Lista de ids de integrantes do elenco",
-                    example: "c54e6010-b5e8-4216-9a64-73fd8b433972",
+                    example: DEFAULT_IDS.cast.id,
                 }),
             creator: z
                 .array(
-                    z.uuidv4("Id do criador está inválido. Ex: ?creator=23fc8bce-13fa-4ef1-9993-3fa8a1408adf").openapi({
+                    z.uuidv4(`Id do criador está inválido. Ex: ?creator=${DEFAULT_IDS.creator.id}`).openapi({
                         description: "Filtra os resultados por um ou mais criadores.",
-                        example: "23fc8bce-13fa-4ef1-9993-3fa8a1408adf",
+                        example: DEFAULT_IDS.creator.id,
                     }),
                 )
                 .openapi({
                     description: "Lista de ids dos criadores",
-                    example: "23fc8bce-13fa-4ef1-9993-3fa8a1408adf",
+                    example: DEFAULT_IDS.creator.id,
                 }),
             title: z.preprocess(
                 (v) => (Array.isArray(v) ? v[0] : v),
@@ -459,7 +458,7 @@ export const schemaReturnItem = registry
     .openapi({ description: "Lista de itens" });
 export const schemaCatalogReturn = z.array(
     schemaContentBase.extend({
-        id: z.uuidv4().openapi({ description: "Id do conteúdo", example: "fdd516b6-f30c-4c38-91a4-30652d5c70a8" }),
+        id: z.uuidv4().openapi({ description: "Id do conteúdo", example: DEFAULT_IDS.MOVIE.id }),
         type: z.enum(["MOVIE", "SERIE"]).openapi({ description: "Indica o tipo do conteúdo", example: "MOVIE" }),
         movieData: schemaMovieData.or(z.null()),
         serieData: schemaSerieDataSummary.or(z.null()),
@@ -469,7 +468,7 @@ export const schemaCatalogReturn = z.array(
 
 export const schemaMoviesReturn = schemaContentBase
     .extend({
-        id: z.uuidv4().openapi({ description: "Id do Filme", example: "fdd516b6-f30c-4c38-91a4-30652d5c70a8" }),
+        id: z.uuidv4().openapi({ description: "Id do Filme", example: DEFAULT_IDS.MOVIE.id }),
         movieData: schemaMovieData,
         type: z.enum(["MOVIE"]),
         _links: schemaLinksHal,
@@ -477,7 +476,7 @@ export const schemaMoviesReturn = schemaContentBase
     .openapi({ "x-order": 2 });
 export const schemaSeriesReturn = schemaContentBase
     .extend({
-        id: z.uuidv4().openapi({ description: "Id da Série", example: "6edd242a-28cd-4d66-958e-e70b2b9f31fb" }),
+        id: z.uuidv4().openapi({ description: "Id da Série", example: DEFAULT_IDS.SERIE.id }),
         serieData: schemaSerieDataSummary,
         type: z.enum(["SERIE"]),
         _links: schemaLinksHal,
@@ -488,9 +487,7 @@ export const schemaGenresReturn = registry.register(
     z
         .array(
             z.object({
-                id: z
-                    .uuidv4()
-                    .openapi({ description: "Id do gênero", example: "c204a7ce-10a4-4bd2-9797-e17b81fe2f55" }),
+                id: z.uuidv4().openapi({ description: "Id do gênero", example: DEFAULT_IDS.genre.id }),
                 name: z.string().openapi({ description: "Título do gênero", example: "Comédia" }),
                 _links: schemaLinksHal,
             }),
@@ -504,7 +501,7 @@ export const schemaCastReturn = registry.register(
             z.object({
                 id: z.uuidv4().openapi({
                     description: "Id do integrante do elenco",
-                    example: "c54e6010-b5e8-4216-9a64-73fd8b433972",
+                    example: DEFAULT_IDS.cast.id,
                 }),
                 name: z
                     .string()
@@ -519,9 +516,7 @@ export const schemaCreatorsReturn = registry.register(
     z
         .array(
             z.object({
-                id: z
-                    .uuidv4()
-                    .openapi({ description: "Id do criador", example: "23fc8bce-13fa-4ef1-9993-3fa8a1408adf" }),
+                id: z.uuidv4().openapi({ description: "Id do criador", example: DEFAULT_IDS.creator.id }),
                 name: z.string().openapi({ description: "Nome do criador", example: "Miazaki da Silva" }),
                 _links: schemaLinksHal,
             }),
@@ -533,7 +528,7 @@ export const schemaMovieReturn = registry.register(
     "ResponseMovie",
     schemaContentBase
         .extend({
-            id: z.uuidv4().openapi({ description: "Id do Filme", example: "fdd516b6-f30c-4c38-91a4-30652d5c70a8" }),
+            id: z.uuidv4().openapi({ description: "Id do Filme", example: DEFAULT_IDS.MOVIE.id }),
             movieData: schemaMovieData,
             type: z.enum(["MOVIE"]),
             creators: schemaCreatorsReturn,
@@ -547,7 +542,7 @@ export const schemaMovieReturn = registry.register(
 export const schemaEpisodeReturn = registry.register(
     "ResponseEpisode",
     schemaEpisode.extend({
-        id: z.uuidv4().openapi({ description: "Id do episódio", example: "4c6d361d-1bfd-4c03-9afd-f8079eb97317" }),
+        id: z.uuidv4().openapi({ description: "Id do episódio", example: DEFAULT_IDS.episode.id }),
         _links: schemaLinksHal,
     }),
 );
@@ -555,7 +550,7 @@ export const seasonReturn = registry.register(
     "ResponseSeason",
     schemaSeason
         .extend({
-            id: z.uuidv4().openapi({ description: "Id da temporada", example: "418b841b-d163-4ce9-a886-7a5bbeaca914" }),
+            id: z.uuidv4().openapi({ description: "Id da temporada", example: DEFAULT_IDS.season.id }),
             _links: schemaLinksHal,
             episodes: z.array(schemaEpisodeReturn).openapi({ description: "lista de episódios" }),
         })
@@ -565,7 +560,7 @@ export const schemaSerieReturn = registry.register(
     "ResponseSerie",
     schemaContentBase
         .extend({
-            id: z.uuidv4().openapi({ description: "Id da Série", example: "6edd242a-28cd-4d66-958e-e70b2b9f31fb" }),
+            id: z.uuidv4().openapi({ description: "Id da Série", example: DEFAULT_IDS.SERIE.id }),
             serieData: z.object({
                 seasons: z.array(seasonReturn).openapi({ description: "Lista de temporadas" }),
             }),

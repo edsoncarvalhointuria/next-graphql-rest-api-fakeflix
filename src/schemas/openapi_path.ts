@@ -32,6 +32,7 @@ import {
     seasonReturn,
 } from "./zod_schemas";
 import z from "zod";
+import { DEFAULT_IDS } from "@/constants/defaultIds";
 
 registry.registerPath({
     method: "get",
@@ -63,21 +64,21 @@ const itens = {
         pluralName: "elencos",
         singularName: "elenco",
         exampleName: "Cameron Dias de Folga",
-        exampleId: "c54e6010-b5e8-4216-9a64-73fd8b433972",
+        exampleId: DEFAULT_IDS.cast.id,
         tag: "Elenco",
     },
     creator: {
         pluralName: "criadores",
         singularName: "criador",
         exampleName: "Miazaki da Silva",
-        exampleId: "23fc8bce-13fa-4ef1-9993-3fa8a1408adf",
+        exampleId: DEFAULT_IDS.creator.id,
         tag: "Criadores",
     },
     genre: {
         pluralName: "gêneros",
         singularName: "gênero",
         exampleName: "Comédia",
-        exampleId: "c204a7ce-10a4-4bd2-9797-e17b81fe2f55",
+        exampleId: DEFAULT_IDS.genre.id,
         tag: "Gêneros",
     },
 };
@@ -238,13 +239,13 @@ const contents = {
         singularName: "Filme",
         pluralName: "Filmes",
         preposition: "do",
-        exampleId: "fdd516b6-f30c-4c38-91a4-30652d5c70a8",
+        exampleId: DEFAULT_IDS.MOVIE.id,
     },
     serie: {
         singularName: "Série",
         pluralName: "Séries",
         preposition: "da",
-        exampleId: "6edd242a-28cd-4d66-958e-e70b2b9f31fb",
+        exampleId: DEFAULT_IDS.SERIE.id,
     },
 };
 (["movie", "serie"] as const).map((v) => {
@@ -470,7 +471,7 @@ const contents = {
         tags: [v === "movie" ? "Filmes" : "Séries", "Gêneros", "Criadores", "Elenco"],
         request: {
             params: schemaContenItemAddParams.extend({
-                id: schemaContenItemAddParams.shape.id.openapi({ example: "b5a3f788-a95c-4c96-b5fb-cffc656f53f7" }),
+                id: schemaContenItemAddParams.shape.id.openapi({ example: contents[v].exampleId }),
             }),
         },
         responses: {
@@ -504,7 +505,7 @@ const contents = {
         tags: [v === "movie" ? "Filmes" : "Séries", "Gêneros", "Criadores", "Elenco"],
         request: {
             params: schemaContenItemAddParams.extend({
-                id: schemaContenItemAddParams.shape.id.openapi({ example: "b5a3f788-a95c-4c96-b5fb-cffc656f53f7" }),
+                id: schemaContenItemAddParams.shape.id.openapi({ example: contents[v].exampleId }),
             }),
         },
         responses: {
@@ -537,7 +538,7 @@ const contents = {
         tags: [v === "movie" ? "Filmes" : "Séries", "Gêneros", "Criadores", "Elenco"],
         request: {
             params: schemaContenItemAlterParams.extend({
-                id: schemaContenItemAlterParams.shape.id.openapi({ example: "b5a3f788-a95c-4c96-b5fb-cffc656f53f7" }),
+                id: schemaContenItemAlterParams.shape.id.openapi({ example: contents[v].exampleId }),
             }),
         },
         responses: {
@@ -549,31 +550,31 @@ const contents = {
                             z.object({
                                 genre_id: z.uuidv4().openapi({
                                     description: "Id do gênero",
-                                    example: "c204a7ce-10a4-4bd2-9797-e17b81fe2f55",
+                                    example: itens.genre.exampleId,
                                 }),
                                 content_id: z.uuidv4().openapi({
                                     description: "Id do conteudo",
-                                    example: "b5a3f788-a95c-4c96-b5fb-cffc656f53f7",
+                                    example: contents[v].exampleId,
                                 }),
                             }),
                             z.object({
                                 cast_id: z.uuidv4().openapi({
                                     description: "Id do elenco",
-                                    example: "c54e6010-b5e8-4216-9a64-73fd8b433972",
+                                    example: itens.cast.exampleId,
                                 }),
                                 content_id: z.uuidv4().openapi({
                                     description: "Id do conteudo",
-                                    example: "b5a3f788-a95c-4c96-b5fb-cffc656f53f7",
+                                    example: contents[v].exampleId,
                                 }),
                             }),
                             z.object({
                                 creator_id: z.uuidv4().openapi({
                                     description: "Id do criador",
-                                    example: "23fc8bce-13fa-4ef1-9993-3fa8a1408adf",
+                                    example: itens.creator.exampleId,
                                 }),
                                 content_id: z.uuidv4().openapi({
                                     description: "Id do conteudo",
-                                    example: "b5a3f788-a95c-4c96-b5fb-cffc656f53f7",
+                                    example: contents[v].exampleId,
                                 }),
                             }),
                         ]),
@@ -601,7 +602,7 @@ const contents = {
 });
 
 const season = {
-    exampleId: "418b841b-d163-4ce9-a886-7a5bbeaca914",
+    exampleId: DEFAULT_IDS.season.id,
 };
 registry.registerPath({
     method: "get",
@@ -735,7 +736,7 @@ registry.registerPath({
     },
 });
 const episode = {
-    exampleId: "4c6d361d-1bfd-4c03-9afd-f8079eb97317",
+    exampleId: DEFAULT_IDS.episode.id,
 };
 registry.registerPath({
     method: "get",
