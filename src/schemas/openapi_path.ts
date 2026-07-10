@@ -48,7 +48,7 @@ const errors = {
         description: "Bad Request",
         content: {
             "application/json": {
-                schema: schemaErroBase,
+                schema: schemaErroBase.extend({ status: schemaErroBase.shape.status.openapi({ example: 400 }) }),
             },
         },
     },
