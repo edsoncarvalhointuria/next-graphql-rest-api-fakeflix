@@ -1,66 +1,44 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+"use client";
+
+import { ApiReferenceReact } from "@scalar/api-reference-react";
+import "@scalar/api-reference-react/style.css";
+import { documentOpenapi } from "@/schemas/openapi_schemas";
+import "@/schemas/openapi_path";
+import { useState } from "react";
+import Loading from "./loading";
+
+const LoadingPage = ({
+    isLoading = true,
+    setIsLoading,
+}: {
+    isLoading?: boolean | null;
+    setIsLoading: (v: boolean | null) => void;
+}) => {
+    return (
+        <div className={isLoading === false ? "loading__exit" : ""} onAnimationEnd={() => setIsLoading(null)}>
+            {isLoading !== null && <Loading />}
+        </div>
+    );
+};
 
 export default function Home() {
-  return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>To get started, edit the page.tsx file.</h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
-  );
+    const [isLoading, setIsLoading] = useState<boolean | null>(true);
+    const document = documentOpenapi();
+    return (
+        <>
+            <LoadingPage isLoading={isLoading} setIsLoading={setIsLoading} />
+            <main style={{ height: "100dvh", display: isLoading ? "none" : undefined }}>
+                <ApiReferenceReact
+                    configuration={{
+                        onLoaded: (v) => setIsLoading(false),
+                        content: document,
+                        theme: "bluePlanet",
+                        defaultHttpClient: { targetKey: "javascript", clientKey: "ofetch" },
+                        metaData: { title: "Fakeflix" },
+                        documentDownloadType: "none",
+                    }}
+                />
+            </main>
+        </>
+    );
 }

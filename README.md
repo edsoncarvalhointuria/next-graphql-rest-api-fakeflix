@@ -1,36 +1,61 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<div align="center" >
+  <img src="./public/fakeflixpng.png" alt="Logo Fakeflix API" style="max-width:300px" />
+</div>
 
-## Getting Started
+# 🎬 Fakeflix: Hyrbid API (REST & GraphQL)
 
-First, run the development server:
+Uma API robusta, híbrida e de alto desempenho desenvolvida como demonstração de domínio profundo em fundamentos de Engenharia de Software, Arquitetura de Redes e Design de APIs.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Este projeto não utiliza ORMs pesados ou frameworks mágicos para a camada de dados. Toda a infraestrutura foi projetada com foco nas melhores práticas de mercado, desde o controle relacional nativo até a interceptação de tráfego na borda (Edge Computing).
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🚀 Ambientes Interativos (Sandbox Epêmero)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+O ambiente de produção foi desenhado para ser testado à vontade. Operações de mutação (POST, PUT, PATCH, DELETE) executam suas lógicas reais e refletem no banco de dados temporário, mas o catálogo original é restaurado automaticamente para garantir a integridade dos testes.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Documentação REST (OpenAPI/Scalar):** [Acesse a Rota Principal (`/`)](#)
+- **Playground GraphQL (Apollo/Yoga):** [Acesse a Rota (`/graphql`)](#)
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## 🧠 Destaques Arquiteturais
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 🔗 REST: Maturidade Nível 3 (HATEOAS)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+A camada REST alcança o nível máximo do modelo de maturidade de Richardson. Todas as requisições retornam o estado atual do recurso acompanhado de hiperlinks de navegação (`_links`), permitindo que o cliente descubra as próximas ações dinamicamente sem depender de documentação externa.
 
-## Deploy on Vercel
+### 🛡️ Tratamento de Erros Padronizado (RFC 7807)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+A API não retorna erros genéricos. Qualquer anomalia (seja falha de validação ou estouro de limite de requisições) é envelopada e devolvida estritamente no padrão internacional **RFC 7807** (`application/problem+json`), garantindo previsibilidade para os clientes que a consomem.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 🐙 GraphQL com DataLoader (Anti N+1)
+
+O motor GraphQL resolve relacionamentos complexos (Filmes, Séries, Temporadas, Episódios, Elenco, Criadores) de forma altamente otimizada. A implementação do padrão `DataLoader` agrupa e faz cache das resoluções em lote, erradicando o problema clássico de N+1 consultas ao banco de dados.
+
+### 🗄️ Raw SQL & Controle Transacional
+
+A persistência é gerenciada através de um driver SQLite nativo. A ausência de ORMs demonstra o domínio na escrita de _Raw Queries_, mapeamento relacional, controle explícito de Chaves Estrangeiras e integridade atômica utilizando transações manuais (`BEGIN TRANSACTION`, `COMMIT`, `ROLLBACK`).
+
+### 🚦 Edge Rate Limiting (Proxy de Defesa)
+
+Para proteger a integridade do banco de dados e evitar ataques de força bruta, a API conta com um Proxy Reverso operando na borda da aplicação (_Next.js Edge Runtime_). Baseado no algoritmo de Janela Deslizante em memória, o sistema barra requisições excessivas antes mesmo de atingirem a camada lógica principal.
+
+### ✅ Validação Pura (Schema-Driven)
+
+O ciclo de vida dos dados é fortemente tipado. A entrada de dados passa pela validação rigorosa de schemas do **Zod**, garantindo que nenhum dado malformado alcance o banco de dados. Esses mesmos schemas são responsáveis por gerar a documentação OpenAPI dinamicamente.
+
+---
+
+## 🛠️ Tecnologias Utilizadas
+
+- **Framework:** Next.js (App Router & Edge Proxy)
+- **Linguagem:** TypeScript
+- **Bancos de Dados:** SQLite (Raw SQL Driver + In-Memory/Tmp Clone para Sandbox)
+- **GraphQL:** Implementação de Schemas, Resolvers e DataLoader
+- **Validação & OpenAPI:** Zod + Zod-to-OpenAPI
+- **Padrões Adotados:** HATEOAS, RFC 7807, Domain-Driven Design (DDD)
+
+---
+
+<div align="center">
+  <i>Edson Carvalho Inturia.</i>
+</div>
