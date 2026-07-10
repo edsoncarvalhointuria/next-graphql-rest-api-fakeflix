@@ -29,10 +29,14 @@ import { HAL_ROUTES } from "@/constants/routes";
 import { contentItemTables } from "@/constants/content";
 import { NextURL } from "next/dist/server/web/next-url";
 import { ERRORS } from "@/constants/errors";
+import { validate } from "graphql";
 
 export type ContextOnlyId = { params: Promise<{ id: string }> };
+type ContextIdTable = {
+    params: Promise<{ table: string; id: string }>;
+};
 type ContextIdTableItemId = {
-    params: Promise<{ table: Tables; itemId: string; id: string }>;
+    params: Promise<{ table: string; itemId: string; id: string }>;
 };
 
 export const linkSelf = (nextUrl: NextURL) => {
@@ -176,13 +180,13 @@ export const updateItensRest = (tableName: (typeof contentItemTables)[number], z
 };
 
 export const getAllContentItemRest = (type: Type) => {
-    return tryCatchRest(async (request: NextRequest, context: ContextIdTableItemId) => {
+    return tryCatchRest(async (request: NextRequest, context: ContextIdTable) => {
         const params = await context.params;
         const { nextUrl } = request;
 
         const validate = schemaContenItemAddParams.parse(params);
 
-        const result = await getBaseItensByContenId(params.table, [params.id]);
+        const result = await getBaseItensByContenId(validate.table, [params.id]);
 
         if (!result.length)
             throw new Error(
@@ -217,7 +221,7 @@ export const getAllContentItemRest = (type: Type) => {
     });
 };
 export const addItensToContentRest = (type: Type) => {
-    return tryCatchRest(async (request: NextRequest, context: ContextIdTableItemId) => {
+    return tryCatchRest(async (request: NextRequest, context: ContextIdTable) => {
         const [body, params] = await Promise.all([request.json(), context.params]);
         const key = `${params.table}sIds` as TableIds;
         const { nextUrl } = request;
@@ -227,7 +231,7 @@ export const addItensToContentRest = (type: Type) => {
         const validateBody = schemaDinamicId(key).parse(body);
 
         const data = { contentId: params.id, ...validateBody };
-        const result = await addBaseItensToContent(params.table, data);
+        const result = await addBaseItensToContent(validateParams.table, data);
 
         if (!result?.length)
             return NextResponse.json(
@@ -270,7 +274,7 @@ export const removeItensFromContentRest = (type: Type) => {
 
         const validate = schemaContenItemAlterParams.parse(params);
 
-        const result = await removeBaseItensFromContentById(params.table, params.itemId, params.id);
+        const result = await removeBaseItensFromContentById(validate.table, params.itemId, params.id);
 
         if (!result)
             throw new Error("Item não encontrado. Verifique o id presente na url.", { cause: ERRORS.NOT_FOUND_SQL });
@@ -293,7 +297,7 @@ export const getContentItemByIdRest = (type: Type) => {
 
         const validate = schemaContenItemAlterParams.parse(params);
 
-        const response = await getContentItemBaseItens(params.table, params.itemId, params.id);
+        const response = await getContentItemBaseItens(validate.table, params.itemId, params.id);
 
         if (!response)
             throw new Error("Item não encontrado. Verifique o id presente na url.", { cause: ERRORS.NOT_FOUND_SQL });
