@@ -9,6 +9,7 @@ import {
     schemaEpisode,
     schemaEpisodeId,
     schemaEpisodeReturn,
+    schemaErroBase,
     schemaId,
     schemaItem,
     schemaLimitOffset,
@@ -34,6 +35,33 @@ import {
 import z from "zod";
 import { DEFAULT_IDS } from "@/constants/defaultIds";
 
+const errors = {
+    404: {
+        description: "Not Found",
+        content: {
+            "application/json": {
+                schema: schemaErroBase,
+            },
+        },
+    },
+    400: {
+        description: "Bad Request",
+        content: {
+            "application/json": {
+                schema: schemaErroBase,
+            },
+        },
+    },
+    // 500: {
+    //     description: "Internal",
+    //     content: {
+    //         "application/json": {
+    //             schema: schemaErroBase,
+    //         },
+    //     },
+    // },
+};
+
 registry.registerPath({
     method: "get",
     path: "/catalog",
@@ -46,7 +74,7 @@ registry.registerPath({
     },
     responses: {
         200: {
-            description: "Lista de Séries e Filmes focados no frontend",
+            description: "Lista de Séries e Filmes",
             content: {
                 "application/json": {
                     schema: schemaReturnBase.extend({
@@ -56,6 +84,8 @@ registry.registerPath({
                 },
             },
         },
+
+        ...errors,
     },
 });
 
@@ -116,6 +146,8 @@ contentItemTables.map((v, i) => {
                     },
                 },
             },
+
+            ...errors,
         },
     });
     registry.registerPath({
@@ -145,6 +177,8 @@ contentItemTables.map((v, i) => {
                     },
                 },
             },
+
+            ...errors,
         },
     });
 
@@ -169,6 +203,8 @@ contentItemTables.map((v, i) => {
                     },
                 },
             },
+
+            ...errors,
         },
     });
     registry.registerPath({
@@ -191,6 +227,8 @@ contentItemTables.map((v, i) => {
                     },
                 },
             },
+
+            ...errors,
         },
     });
     registry.registerPath({
@@ -213,6 +251,8 @@ contentItemTables.map((v, i) => {
                     },
                 },
             },
+
+            ...errors,
         },
     });
     registry.registerPath({
@@ -230,6 +270,8 @@ contentItemTables.map((v, i) => {
                 description: "Resultado da Operação",
                 content: { "application/json": { schema: schemaReturnDelete } },
             },
+
+            ...errors,
         },
     });
 });
@@ -275,6 +317,8 @@ const contents = {
                     },
                 },
             },
+
+            ...errors,
         },
     });
     registry.registerPath({
@@ -303,6 +347,8 @@ const contents = {
                     },
                 },
             },
+
+            ...errors,
         },
     });
     registry.registerPath({
@@ -326,6 +372,8 @@ const contents = {
                     },
                 },
             },
+
+            ...errors,
         },
     });
     registry.registerPath({
@@ -356,6 +404,8 @@ const contents = {
                     },
                 },
             },
+
+            ...errors,
         },
     });
     registry.registerPath({
@@ -385,6 +435,8 @@ const contents = {
                     },
                 },
             },
+
+            ...errors,
         },
     });
     registry.registerPath({
@@ -401,6 +453,8 @@ const contents = {
                 description: "Resultado da Operação",
                 content: { "application/json": { schema: schemaReturnDelete } },
             },
+
+            ...errors,
         },
     });
 
@@ -429,6 +483,8 @@ const contents = {
                         },
                     },
                 },
+
+                ...errors,
             },
         });
         registry.registerPath({
@@ -459,6 +515,8 @@ const contents = {
                         },
                     },
                 },
+
+                ...errors,
             },
         });
     }
@@ -495,6 +553,8 @@ const contents = {
                     },
                 },
             },
+
+            ...errors,
         },
     });
     registry.registerPath({
@@ -528,6 +588,8 @@ const contents = {
                     },
                 },
             },
+
+            ...errors,
         },
     });
     registry.registerPath({
@@ -581,6 +643,8 @@ const contents = {
                     },
                 },
             },
+
+            ...errors,
         },
     });
     registry.registerPath({
@@ -597,6 +661,8 @@ const contents = {
                 description: "Resultado da Operação",
                 content: { "application/json": { schema: schemaReturnDelete } },
             },
+
+            ...errors,
         },
     });
 });
@@ -625,6 +691,8 @@ registry.registerPath({
                 },
             },
         },
+
+        ...errors,
     },
 });
 registry.registerPath({
@@ -651,6 +719,8 @@ registry.registerPath({
                 },
             },
         },
+
+        ...errors,
     },
 });
 registry.registerPath({
@@ -672,6 +742,8 @@ registry.registerPath({
                 },
             },
         },
+
+        ...errors,
     },
 });
 registry.registerPath({
@@ -693,6 +765,8 @@ registry.registerPath({
                 },
             },
         },
+
+        ...errors,
     },
 });
 registry.registerPath({
@@ -709,6 +783,8 @@ registry.registerPath({
             description: "Resultado da Operação",
             content: { "application/json": { schema: schemaReturnDelete } },
         },
+
+        ...errors,
     },
 });
 registry.registerPath({
@@ -733,6 +809,8 @@ registry.registerPath({
                 },
             },
         },
+
+        ...errors,
     },
 });
 const episode = {
@@ -759,6 +837,8 @@ registry.registerPath({
                 },
             },
         },
+
+        ...errors,
     },
 });
 registry.registerPath({
@@ -783,6 +863,8 @@ registry.registerPath({
                 },
             },
         },
+
+        ...errors,
     },
 });
 registry.registerPath({
@@ -804,6 +886,8 @@ registry.registerPath({
                 },
             },
         },
+
+        ...errors,
     },
 });
 registry.registerPath({
@@ -825,6 +909,8 @@ registry.registerPath({
                 },
             },
         },
+
+        ...errors,
     },
 });
 registry.registerPath({
@@ -841,5 +927,7 @@ registry.registerPath({
             description: "Resultado da Operação",
             content: { "application/json": { schema: schemaReturnDelete } },
         },
+
+        ...errors,
     },
 });

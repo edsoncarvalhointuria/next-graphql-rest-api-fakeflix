@@ -572,3 +572,23 @@ export const schemaSerieReturn = registry.register(
         })
         .openapi({ "x-order": 2 }),
 );
+
+export const schemaErroBase = registry.register(
+    "ErrorBase",
+    z.object({
+        success: z.boolean().openapi({ description: "Revela o status da operação", example: false }),
+        type: z
+            .string()
+            .openapi({ description: "Informa um link da documentação para ajudar", example: "about:blank" }),
+        title: z.string().openapi({ description: "Informa o tipo de erro", example: "O JSON está inválido" }),
+        status: z.number().openapi({ description: "Códigos de Status HTTP", example: 404 }),
+        detail: z.string().openapi({
+            description: "Informa os detalhes do erro",
+            example:
+                "O JSON enviado está inválido. Verifique se os campos estão preenchidos corretamente e tente novamente.",
+        }),
+        instance: z
+            .string()
+            .openapi({ description: "Link onde ocorreu o erro", example: "https://api.exemplo.com/items" }),
+    }),
+);

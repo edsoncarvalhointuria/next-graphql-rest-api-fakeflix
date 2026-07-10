@@ -43,7 +43,7 @@ Além da API REST, o projeto também possui uma camada **GraphQL**, oferecendo c
 Explore as rotas utilizando o menu lateral e consulte os **Schemas** para conhecer todas as estruturas de requisição e resposta da API.`,
             contact: {
                 email: "edsoncarvalhointuria@gmail.com",
-                name: "Edson Carvalho Inturia",
+                name: "",
                 url: "https://edsoncarvalhointuria.github.io/portfolio/",
             },
         },
