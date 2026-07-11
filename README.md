@@ -6,7 +6,7 @@
 
 Uma API híbrida (**REST + GraphQL**) desenvolvida para gerenciar um catálogo fictício de filmes e séries.
 
-O projeto foi construído com foco em boas práticas de Engenharia de Software, Arquitetura de APIs e modelagem relacional, explorando conceitos como **HATEOAS**, **GraphQL**, **Raw SQL**, **validação orientada por schemas**, **documentação automática** e **Edge Computing**.
+O Fakeflix API foi construído com foco em boas práticas de Engenharia de Software, Arquitetura de APIs e modelagem relacional, explorando conceitos como **HATEOAS**, **GraphQL**, **Raw SQL**, **validação orientada por schemas**, **documentação automática** e **Edge Computing**.
 
 <p align="center">
 
